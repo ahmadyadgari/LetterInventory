@@ -33,6 +33,13 @@ public class LetterInventory  {
    */
   public LetterInventory(String text) {
    //TODO
+    for (int i = 0; i < text.length(); i++) {
+      char c = Character.toLowerCase(text.charAt(i));
+      if (c >= 'a' && c <= 'z') {
+          assert false;
+          inventory[c - 'a']++;
+      }
+    }
   }
 
   /**
@@ -46,7 +53,14 @@ public class LetterInventory  {
    */
   public int getIndex(char c) {
   //TODO
-    return 0;
+    if (c >= 'a' && c <= 'z') {
+      return c - 'a';
+    } else if (c >= 'A' && c <= 'Z') {
+      return c - 'A';
+    } else {
+      throw new IllegalArgumentException("Invalid character");
+    }
+
   }
 
   /**
@@ -55,6 +69,11 @@ public class LetterInventory  {
    */
   public void add(char c) {
 //TODO
+    int index = getIndex(c);
+    if (index < 0 || index >= ALPHABET_SIZE) {
+      throw new IllegalArgumentException("Invalid character");
+    }
+    inventory[index]++;
   }
 
   /**
@@ -63,6 +82,14 @@ public class LetterInventory  {
    */
   public void subtract(char c) {
   //TODO
+    int index = getIndex(c);
+    if (index < 0 || index >= ALPHABET_SIZE) {
+      throw new IllegalArgumentException("Invalid character: " + c);
+    }
+    if (inventory[index] == 0) {
+      throw new IllegalArgumentException("Negative count");
+    }
+    inventory[index]--;
   }
 
   /**
@@ -71,6 +98,8 @@ public class LetterInventory  {
    */
   public int get(char c) {
    //TODO
+
+
     return 0;
   }
 
@@ -82,6 +111,8 @@ public class LetterInventory  {
    */
   public void set(char c, short count) {
     //TODO
+
+
   }
 
   /**
@@ -91,6 +122,10 @@ public class LetterInventory  {
    */
   public boolean contains(char c) {
     //TODO
+    int index = getIndex(c);
+    if (index < 0 || index >= ALPHABET_SIZE) {
+      throw new IllegalArgumentException("Invalid character");
+    }
     return false;
   }
 
@@ -100,6 +135,10 @@ public class LetterInventory  {
    */
   public int size() {
    //TODO
+    int count = 0;
+    for (int i = 0; i < ALPHABET_SIZE; i++) {
+      count += inventory[i];
+    }
     return 0;
   }
 
@@ -109,6 +148,8 @@ public class LetterInventory  {
    */
   public boolean isEmpty() {
     // TODO
+
+
     return false;
   }
 
