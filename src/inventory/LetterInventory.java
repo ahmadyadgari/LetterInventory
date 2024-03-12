@@ -15,6 +15,11 @@ package inventory;
  */
 public class LetterInventory  {
 
+  // if this was private int[] inventory - it takes up 32 bits *  26 letters => 832 bits of space
+  // if this was private short[] inventory - it takes up 16 its * 26 letters => 416 bits of space
+  //if this was private byte[] inventory - it takes up 8 bits * 26 letter => 208 bits of space
+     // only want to do this if the letter count < 256
+
   private short[] inventory; // inventory is null here
   public static final byte ALPHABET_SIZE = 26;
 
@@ -22,8 +27,8 @@ public class LetterInventory  {
    * Constructs an integer array for the size of the alphabet.
    * All letter counts are initialized to zero.
    */
-  public LetterInventory(){
-    inventory = new short[ALPHABET_SIZE];
+  public LetterInventory(){inventory = new short[ALPHABET_SIZE];
+
   }
   /**
    * Constructs an integer array for the size of the alphabet.
@@ -32,11 +37,10 @@ public class LetterInventory  {
    * @param text
    */
   public LetterInventory(String text) {
-   //TODO
+    //TODO
     for (int i = 0; i < text.length(); i++) {
       char c = Character.toLowerCase(text.charAt(i));
       if (c >= 'a' && c <= 'z') {
-          assert false;
           inventory[c - 'a']++;
       }
     }
@@ -52,7 +56,7 @@ public class LetterInventory  {
    * @return index of the character
    */
   public int getIndex(char c) {
-  //TODO
+    //TODO
     if (c >= 'a' && c <= 'z') {
       return c - 'a';
     } else if (c >= 'A' && c <= 'Z') {
@@ -68,7 +72,7 @@ public class LetterInventory  {
    * @param c a-z or A-Z otherwise an IllegalArgumentException is thrown
    */
   public void add(char c) {
-//TODO
+    //TODO
     int index = getIndex(c);
     if (index < 0 || index >= ALPHABET_SIZE) {
       throw new IllegalArgumentException("Invalid character");
@@ -81,7 +85,7 @@ public class LetterInventory  {
    * @param c a-z or A-Z otherwise an IllegalArgumentException is thrown
    */
   public void subtract(char c) {
-  //TODO
+    //TODO
     int index = getIndex(c);
     if (index < 0 || index >= ALPHABET_SIZE) {
       throw new IllegalArgumentException("Invalid character: " + c);
@@ -98,9 +102,8 @@ public class LetterInventory  {
    */
   public int get(char c) {
    //TODO
-
-
-    return 0;
+    int index = getIndex(c);
+    return inventory[index];
   }
 
   /**
@@ -111,8 +114,11 @@ public class LetterInventory  {
    */
   public void set(char c, short count) {
     //TODO
-
-
+    if (count < 0) {
+      throw new IllegalArgumentException("Count cannot be negative.");
+    }
+    int index = getIndex(c);
+    inventory[index] = count;
   }
 
   /**
@@ -148,9 +154,12 @@ public class LetterInventory  {
    */
   public boolean isEmpty() {
     // TODO
-
-
-    return false;
+    for (short count : inventory) {
+      if (count != 0) {
+        return false;
+      }
+    }
+    return true;
   }
 
   /**
@@ -183,7 +192,12 @@ public class LetterInventory  {
         toReturn.append((char) ('a' + i));
       }
     }
-    return toReturn.append("]").toString();
+
+    // join in tge closing }
+    toReturn.append("}");
+
+    // convert the StringBuilder to a String and return it
+    return toReturn.toString();
   }
 
 }
